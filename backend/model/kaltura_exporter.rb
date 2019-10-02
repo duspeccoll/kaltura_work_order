@@ -32,7 +32,7 @@ class KalturaSerializer < ASpaceExport::Serializer
             xml.name obj.title
             xml.description obj.description
             xml.tags {
-              obj.tags.each do |tag|
+              obj.tags.uniq.each do |tag|
                 xml.tag tag
               end
             }
