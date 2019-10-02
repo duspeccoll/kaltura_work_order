@@ -19,7 +19,7 @@ class KalturaSerializer < ASpaceExport::Serializer
     root_args = {
       'xmlns:xsd' => "http://www.w3.org/2001/XMLSchema",
       'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-      'xsi:noNamespaceSchemaDeclaration' => "ingestion.xsd"
+      'xsi:noNamespaceSchemaLocation' => "ingestion.xsd"
     }
 
     xml.mrss(root_args) {
