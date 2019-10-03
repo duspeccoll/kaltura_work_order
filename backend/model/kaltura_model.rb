@@ -6,6 +6,7 @@ class KalturaModel < ASpaceExport::ExportModel
   attr_accessor :title
   attr_accessor :component_id
   attr_accessor :description
+  attr_accessor :event_date
   attr_accessor :license
   attr_accessor :related_website
   attr_accessor :tags
@@ -16,6 +17,7 @@ class KalturaModel < ASpaceExport::ExportModel
     [:title, :dates] => :handle_title,
     :component_id => :component_id=,
     :notes => :handle_notes,
+    :dates => :handle_dates,
     :subjects => :handle_subjects,
     :linked_agents => :handle_agents,
     :resource => :handle_resource,
@@ -61,6 +63,16 @@ class KalturaModel < ASpaceExport::ExportModel
     end
   end
 
+  # kaltura handles dates in epoch time; we only want to provide a date if it's exact
+  # (e.g. no months or years)
+  def handle_dates(dates)
+    dates.each do |date|
+      next if date['label'] != "creation"
+      d = date['begin']
+      self.event_date = /^\d{4}-\d{2}-\d{2}$/.match(d) ? DateTime.parse(d).strftime("%s") : nil
+    end
+  end
+
   def handle_subjects(subjects)
     subjects.map{ |s| s['_resolved'] }.each do |subject|
       subject['terms'].each do |t|
@@ -93,8 +105,8 @@ class KalturaModel < ASpaceExport::ExportModel
   end
 
   def handle_documents(docs)
-    if !docs.nil? || !docs.empty?
-      self.related_website = docs[0]['location']
+    unless docs.nil? || docs.empty?
+      self.related_website = docs.first['location']
     end
   end
 

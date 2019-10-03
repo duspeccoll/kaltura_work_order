@@ -59,6 +59,7 @@ class KalturaSerializer < ASpaceExport::Serializer
               xml.customData(:metadataProfileId => "10473112") {
                 xml.xmlData {
                   xml.metadata {
+                    xml.EventDate obj.event_date if !obj.event_date.nil?
                     xml.RelatedWebsite obj.related_website if !obj.related_website.nil?
                     xml.ReferenceID obj.component_id
                     xml.LicenseAgreement obj.license if !obj.license.nil?
