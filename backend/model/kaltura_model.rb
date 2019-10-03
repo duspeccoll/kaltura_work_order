@@ -6,6 +6,8 @@ class KalturaModel < ASpaceExport::ExportModel
   attr_accessor :title
   attr_accessor :component_id
   attr_accessor :description
+  attr_accessor :license
+  attr_accessor :related_website
   attr_accessor :tags
   attr_accessor :media_type
   attr_accessor :parts
@@ -17,6 +19,7 @@ class KalturaModel < ASpaceExport::ExportModel
     :subjects => :handle_subjects,
     :linked_agents => :handle_agents,
     :resource => :handle_resource,
+    :external_documents => :handle_documents,
     :instances => :handle_instances
   }
 
@@ -44,9 +47,16 @@ class KalturaModel < ASpaceExport::ExportModel
   end
 
   def handle_notes(notes)
-    notes.each do |note|
-      if note['type'] == "abstract"
-        self.description = ASpaceExport::Utils.extract_note_text(note)
+    notes.select{ |n| n['type'] == "abstract" }.each do |note|
+      self.description = ASpaceExport::Utils.extract_note_text(note)
+    end
+    notes.select{ |n| n['type'] == "userestrict" }.each do |note|
+      self.license = ASpaceExport::Utils.extract_note_text(note)
+    end
+
+    if self.license.nil? || self.license.empty?
+      notes.select{ |n| n['type'] == "accessrestrict" }.each do |note|
+        self.license = ASpaceExport::Utils.extract_note_text(note)
       end
     end
   end
@@ -80,6 +90,12 @@ class KalturaModel < ASpaceExport::ExportModel
   def handle_resource(resource)
     r = resource['_resolved']
     self.tags << "#{r['id_0']} #{r['title']}"
+  end
+
+  def handle_documents(docs)
+    if !docs.nil? || !docs.empty?
+      self.related_website = docs[0]['location']
+    end
   end
 
   def handle_instances(instances)
