@@ -37,8 +37,8 @@ class KalturaSerializer < ASpaceExport::Serializer
               end
             }
             xml.categories {
-              xml.category { xml.text "MediaSpace&gt;site&gt;channels&gt;University Libraries Archival Audiovisual Collection" }
-              xml.category { xml.text "MediaSpace&gt;site&gt;galleries&gt;Academics&gt;University Libraries&gt;Special Collections" }
+              xml.category { xml.text " MediaSpace>site>channels>University Libraries Archival Audiovisual Collection" }
+              xml.category { xml.text " MediaSpace>site>galleries>Academics>University Libraries>Special Collections" }
             }
             if !obj.media_type.nil?
               xml.media {
