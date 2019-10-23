@@ -50,11 +50,6 @@ class KalturaSerializer < ASpaceExport::Serializer
                 xml.urlContentResource(:url => "#{AppConfig[:kaltura_sftp_url]}/#{part}")
               }
             }
-            xml.thumbnails {
-              xml.thumbnail(:isDefault => true) {
-                xml.urlContentResource(:url => "#{AppConfig[:kaltura_sftp_url]}/test.jpg")
-              }
-            }
             xml.customDataItems {
               xml.customData(:metadataProfileId => "10473112") {
                 xml.xmlData {
