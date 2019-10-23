@@ -4,7 +4,6 @@ class KalturaModel < ASpaceExport::ExportModel
   include JSONModel
 
   attr_accessor :title
-  attr_accessor :component_id
   attr_accessor :description
   attr_accessor :event_date
   attr_accessor :license
@@ -15,7 +14,6 @@ class KalturaModel < ASpaceExport::ExportModel
 
   @archival_object_map = {
     [:title, :dates] => :handle_title,
-    :component_id => :component_id=,
     :notes => :handle_notes,
     :dates => :handle_dates,
     :subjects => :handle_subjects,
@@ -127,7 +125,7 @@ class KalturaModel < ASpaceExport::ExportModel
         end
         tree = object['tree']['_resolved']
         tree['children'].each do |child|
-          self.parts << child['title']
+          self.parts << {'title' => child['title'], 'uri' => child['record_uri']}
         end
       end
     end
