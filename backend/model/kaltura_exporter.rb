@@ -47,7 +47,7 @@ class KalturaSerializer < ASpaceExport::Serializer
             end
             xml.contentAssets {
               xml.content {
-                xml.urlContentResource(:url => "#{AppConfig[:kaltura_sftp_url]}/#{part}")
+                xml.urlContentResource(:url => "#{AppConfig[:kaltura_sftp_url]}/#{part['title']}")
               }
             }
             xml.customDataItems {
@@ -56,7 +56,7 @@ class KalturaSerializer < ASpaceExport::Serializer
                   xml.metadata {
                     xml.EventDate obj.event_date if !obj.event_date.nil?
                     xml.RelatedWebsite obj.related_website if !obj.related_website.nil?
-                    xml.ReferenceID obj.component_id
+                    xml.ReferenceID part['uri']
                     xml.LicenseAgreement obj.license if !obj.license.nil?
                   }
                 }
