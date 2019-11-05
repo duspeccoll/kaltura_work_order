@@ -118,7 +118,7 @@ class KalturaModel < ASpaceExport::ExportModel
           "1"
         when "still_image"
           "2"
-        when /sound_recording.+?/
+        when /sound_recording(.+?)?/
           "5"
         else
           nil
